@@ -179,7 +179,7 @@ function uploadFile(filename, file, sha256) {
                 /*  in IE 7 animated GIFs freeze immediately after submit, we need this hack to reload the GIF and make the
                     animation work during the file upload */
 
-                $('#gif-upload-progress-bar span').html('<img style="display:block" src="../img/bar.gif">');
+                $('#gif-upload-progress-bar span').html('<img style="display:block" src="/static/img/bar.gif">');
             }
         }
     }); // $.ajax()
@@ -228,7 +228,7 @@ function scanFile(evt) {
         $('#hash-progress').css('width','0%');
         $('#hash-progress-bar').show();
 
-        worker = new Worker('static/js/sha256.js');
+        worker = new Worker('/static/js/sha256.js');
 
         worker.onmessage = function(e) {
 

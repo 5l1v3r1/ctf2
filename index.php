@@ -58,9 +58,9 @@
         <!-- Javascript inclusion -->
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="static/js/bootstrap.js"></script>
-        <script type="text/javascript" src="static/js/base.js"></script>
-        <script type="text/javascript" src="static/js/index.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/static/js/base.js"></script>
+        <script type="text/javascript" src="/static/js/index.js"></script>
     </head>
 
     <body>
@@ -73,8 +73,8 @@
                             <li id="mnu-home">
                                 <a href="/"><i class="icon-home icon-white"></i></a>
                             </li>
-                            <li id="mnu-community"><a href="about.php">About</a></li>
-                            <li id="mnu-community"><a href="recent-leaks.php">Recent Leaks</a></li>
+                            <li id="mnu-community"><a href="/about.php">About</a></li>
+                            <li id="mnu-community"><a href="/recent-leaks.php">Recent Leaks</a></li>
                         </ul>
                     </div>
                 </div>
@@ -126,11 +126,11 @@
             <div class="container">
 
                 <div id="logo" class="center margin-top-8">
-                    <img src="static/img/logo.png" alt="HoneyLeaks">
+                    <img src="/static/img/logo.png" alt="HoneyLeaks">
                 </div>
 
                 <div id="description" class="center margin-top-2">
-                    HoneyLeaks is a free service that allows <em>the leaking of sensitive files</em> and facilitates their anonymous storage and distribution.
+                    HoneyLeaks is a free service that facilitates <em>the anonymous leaking of information</em> and facilitates its secure storage and distribution.
                 </div>
 
                 <div id="box" class="center margin-top-4">

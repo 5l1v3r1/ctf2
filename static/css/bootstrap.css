@@ -1460,7 +1460,7 @@ table .span24 {
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("/static/img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -1469,7 +1469,7 @@ table .span24 {
   *margin-left: 0;
 }
 .icon-white {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("/static/img/glyphicons-halflings-white.png");
 }
 .icon-glass {
   background-position: 0      0;
@@ -4531,14 +4531,14 @@ table td {
   padding: 8px 10px 9px;
 }
 table th.headerSortDown i {
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("/static/img/glyphicons-halflings.png");
   background-position: -288px -120px;
   display: inline-block;
   height: 14px;
   width: 14px;
 }
 table th.headerSortUp i {
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("/static/img/glyphicons-halflings.png");
   background-position: -313px -119px;
   display: inline-block;
   height: 14px;
@@ -4598,7 +4598,7 @@ span.required-field {
 }
 /* GIF based progress bar for older browsers */
 .gif-progress-bar span {
-  background: url("../img/bar.gif") no-repeat scroll 0 0 transparent;
+  background: url("/static/img/bar.gif") no-repeat scroll 0 0 transparent;
   height: 20px;
   width: 530px;
   display: block;
@@ -4667,7 +4667,7 @@ div.url-chooser span.url {
 div.file-chooser,
 div.url-chooser,
 span.action {
-  background-image: url("../img/sprite.png");
+  background-image: url("/static/img/sprite.png");
   background-repeat: no-repeat;
 }
 div.file-chooser,
@@ -4739,10 +4739,10 @@ form#fileform {
   float: right;
 }
 .thumb-up div.button {
-  background: url(../img/devil-angel.png) no-repeat -40px 0;
+  background: url(/static/img/devil-angel.png) no-repeat -40px 0;
 }
 .thumb-down div.button {
-  background: url(../img/devil-angel.png) no-repeat 0 0;
+  background: url(/static/img/devil-angel.png) no-repeat 0 0;
 }
 .thumb-up div.button:hover {
   background-position: -120px 0;
@@ -4772,7 +4772,7 @@ form#fileform {
   color: #b0a7a7;
 }
 div.toggle {
-  background-image: url("../img/toggle.png");
+  background-image: url("/static/img/toggle.png");
   height: 13px;
   width: 80px;
   padding-top: 12px;
@@ -4838,22 +4838,22 @@ div.frame {
   vertical-align: middle;
 }
 .reply i {
-  background: url("../img/icons.png") 0 0;
+  background: url("/static/img/icons.png") 0 0;
 }
 .reply:hover i {
-  background: url("../img/icons.png") -16px 0;
+  background: url("/static/img/icons.png") -16px 0;
 }
 .delete i {
-  background: url("../img/icons.png") -32px 0;
+  background: url("/static/img/icons.png") -32px 0;
 }
 .delete:hover i {
-  background: url("../img/icons.png") -48px 0;
+  background: url("/static/img/icons.png") -48px 0;
 }
 .send i {
-  background: url("../img/icons.png") -32px -32px;
+  background: url("/static/img/icons.png") -32px -32px;
 }
 .send:hover i {
-  background: url("../img/icons.png") -48px -32px;
+  background: url("/static/img/icons.png") -48px -32px;
 }
 li.unread .message-subject {
   font-weight: bold;
@@ -4949,5 +4949,5 @@ div.ruleset.active {
   color: #ffffff;
 }
 div.ruleset.active i {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("/static/img/glyphicons-halflings-white.png");
 }
