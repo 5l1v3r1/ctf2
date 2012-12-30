@@ -1,66 +1,33 @@
 <?php
-  include("inc/config.php");
-  
-  if(isset($_FILES['files'])){
-    $errors= array();
-    
-	  foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){  // Loop through each uploaded file
-	  
-		  $file_name = $key.$_FILES['files']['name'][$key];
-		  $file_size =$_FILES['files']['size'][$key];
-		  $file_tmp =$_FILES['files']['tmp_name'][$key];
-		  $file_type=$_FILES['files']['type'][$key];
-		
-		  $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
-      $extensions = array("jpeg","jpg","png"); 		
-      if(in_array($file_ext,$extensions )=== false){
-        $errors[]='For security you can only upload files in the following formats .doc, .pdf, .jpg, .png, .gif.';
-  	  }	
-  	  
-      if($file_size > 2097152){
-        $errors[]='File size must be less than 2 MB';
-      }		
-      //$query="INSERT into upload_data (`USER_ID`,`FILE_NAME`,`FILE_SIZE`,`FILE_TYPE`) VALUES('$user_id','$file_name','$file_size','$file_type'); ";
-      $desired_dir="user_data";
-      if(empty($errors)==true){
-        if(is_dir($desired_dir)==false){
-          mkdir("$desired_dir", 0700);		// Create directory if it does not exist
-        }
-        if(is_dir("$desired_dir/".$file_name)==false){
-          move_uploaded_file($file_tmp,"user_data/".$file_name);
-        }else{	// rename the file if another one exist
-          $new_dir="user_data/".$file_name.time();
-          rename($file_tmp,$new_dir);				
-        }
-        ///mysql_query($query);			
-      }else{
-        print_r($errors);
-      }
-    }
-    if(empty($error)){
-      echo "Success";
-    }
-  }
+  include("inc/common.php");
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <!-- First commit 4e0ae09 - I <3 cRYP70ANaRCHy - Julian -->
-        
+       
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Pragma" content="no-store">
+        <meta http-equiv="Expires" content="-1">
+    
         <title>HoneyLeaks - The most secure leak platform ever conceived</title>
-        <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
         
         <!-- Favicon definition -->
-        <link rel="shortcut icon" href="static/img/favicon.ico">
-        <link rel="icon" href="static/img/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/static/img/favicon.ico">
+        <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
 
-        <!-- Javascript inclusion -->
+        <!-- Javascript inclusion -->        
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>
         <script type="text/javascript" src="/static/js/base.js"></script>
+
+        
+        <script type="text/javascript" src="/static/js/sha256.js"></script>
         <script type="text/javascript" src="/static/js/index.js"></script>
+        
     </head>
 
     <body>
@@ -73,8 +40,8 @@
                             <li id="mnu-home">
                                 <a href="/"><i class="icon-home icon-white"></i></a>
                             </li>
-                            <li id="mnu-community"><a href="/about.php">About</a></li>
-                            <li id="mnu-community"><a href="/recent-leaks.php">Recent Leaks</a></li>
+                            <li id="mnu-community"><a href="/about/">About</a></li>
+                            <li id="mnu-community"><a href="/recent-leaks/">Recent Leaks</a></li>
                         </ul>
                     </div>
                 </div>
@@ -85,7 +52,7 @@
             <div id="dlg-upload-progress" class="modal hide">
                 <div class="modal">
                       <div class="modal-header">
-                        <a class="close" href="#" onclick="javascript:cancelUpload()">x</a>
+                        <a class="close" href="#" onclick="javascript:cancelUpload()">×</a>
                         <h3>Uploading file...</h3>
                       </div>
                       <div class="modal-body">
@@ -107,6 +74,22 @@
                 </div>
             </div>
             <!-- End of upload progress dialog -->
+            
+            <!-- Upload error dialog -->
+            <div id="dlg-upload-error" class="modal hide">
+                <div class="modal-header">
+                    <a class="close" href="#">×</a>
+                    <h3>Upload Error</h3>
+                </div>
+                <div class="modal-body">
+                    <p class="error-message"></p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn cancel" href="#">Cancel</a>
+                </div>
+            </div>
+            <!-- Enf of upload error dialog -->
+
 
             <!-- File too large dialog -->
             <div id="dlg-file-too-large" class="modal hide">
@@ -121,7 +104,7 @@
                     <a class="btn cancel" href="#">Cancel</a>
                 </div>
             </div>
-            <!-- Enf of file too large dialog -->
+            <!-- End of file too large dialog -->
 
             <div class="container">
 
@@ -144,7 +127,7 @@
                             </div>
                         </form>
 
-                        <!-- File limit change to 2MB in commit XXXXXXX - DC -->
+                        <!-- File limit changed to 2MB in commit XXXXXXX - DC -->
                         <div class="center">Maximum file size: 2MB</div>
 
                         <div class="center margin-top-2" style="width:600px;color:gray;">
@@ -162,7 +145,7 @@
         </div>
 
         <div class="footer center">
-            Yeah, this is a CTF challenge. Don't actually leak anything!
+            Yeah, this is a CTF challenge. Don't actually leak anything!  - Email donnchacarroll@gmail.com if you think its broken.
         </div>
     </body>
 </html>

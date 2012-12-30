@@ -92,6 +92,79 @@ $(document).ajaxSend(function(event, xhr, settings) {
 });
 
 
+function cookiesEnabled()
+{
+    var enabled = (navigator.cookieEnabled) ? true : false;
+
+    if (typeof navigator.cookieEnabled == "undefined" && !enabled)
+    {
+        document.cookie="testcookie";
+        enabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
+    }
+
+    return (enabled);
+}
+
+$(document).ready(function(){
+
+    if (!cookiesEnabled()) {
+        $('#cookies-disabled-alert').show();
+    }
+
+    $('.contact').text('contact' + '@' + 'virustotal.com');
+
+    $('#mnu-user-name').click(function (e) {
+        var $li = $(this).parent("li").toggleClass('open');
+        return false;
+    });
+
+    $(document).delegate('a.cancel', 'click', function(event) {
+
+        $(this).closest('.modal').modal('hide');
+        event.preventDefault();
+
+    });
+    
+    $(document).delegate('a.close', 'click', function(event) {
+
+        $(this).closest('.modal').modal('hide');
+        event.preventDefault();
+
+    });
+    
+    
+
+    $(document).delegate('#lnk-password-reset', 'click', function(event) {
+
+        $('#dlg-signin').modal('hide');
+
+        /* we store the original HTML code of the password reset dialog as data asociated
+           to its DOM node, check if a backed up code exists and restore it, else back it up */
+
+        var backup = $('#dlg-password-reset').data('backup');
+
+        if (backup) {
+
+            $('#dlg-password-reset').html(backup);
+
+        } else {
+
+            $('#dlg-password-reset').data('backup', $('#dlg-password-reset').html());
+        }
+
+        $('#dlg-password-reset').modal('show');
+        event.preventDefault();
+    });
+
+    $("(span|a)[rel=popover]").popover({
+        offset: 10,
+        html: true
+    }).click(function(e) {
+        e.preventDefault()
+    });
+
+});
+
 $(window).unload(function(){
 /*
     This is just to force Firefox reloading the page when the browser

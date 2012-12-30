@@ -3,55 +3,6 @@ var selectedFile = null;
 var selectedFileName = null
 var currentUpload = null;
 
-/**
- * jQuery Cookie plugin
- *
- * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- *
- */
-(function($) {
-    $.cookie = function(key, value, options) {
-
-        // key and at least value given, set cookie...
-        if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
-            options = $.extend({}, options);
-
-            if (value === null || value === undefined) {
-                options.expires = -1;
-            }
-
-            if (typeof options.expires === 'number') {
-                var days = options.expires, t = options.expires = new Date();
-                t.setDate(t.getDate() + days);
-            }
-
-            value = String(value);
-
-            return (document.cookie = [
-                encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
-                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                options.path    ? '; path=' + options.path : '',
-                options.domain  ? '; domain=' + options.domain : '',
-                options.secure  ? '; secure' : ''
-            ].join(''));
-        }
-
-        // key and possibly options given, get cookie...
-        options = value || {};
-        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
-
-        var pairs = document.cookie.split('; ');
-        for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
-            if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
-        }
-        return null;
-    };
-})(jQuery);
-
-
 
 var timeDiff  =  {
     setStartTime:function (){
@@ -63,11 +14,6 @@ var timeDiff  =  {
         d = new Date();
         return (d.getTime()-time);
     }
-}
-
-function setLanguage(language) {
-    jQuery.cookie('django_language', language);
-    window.location.reload();
 }
 
 function uploadProgress(evt) {
@@ -94,8 +40,17 @@ function uploadComplete(evt) {
           reach 100% and create a better psychological effect */
 
         window.setTimeout(function(response){
-
-            window.location.href = '/file/' + response.sha256 + '/analysis/' + response.timestamp + '/';
+            /* We have got a JSON response from /upload/. If file upload was successfully redirect to recent uploads
+               else we want to display returned error message*/
+               
+            if (response.status == 'success'){
+                window.location.href = '/recent-leaks/' + response.sha256;
+            } else {
+                // Hide upload dialog and display error message
+                $('#dlg-upload-progress').modal('hide');
+                $('div#dlg-upload-error .error-message').html(response.info);
+                $('#dlg-upload-error').modal('show');
+            }
 
         }, 1000, response);
     }
@@ -133,53 +88,62 @@ function uploadFile(filename, file, sha256) {
 
     var data = {};
 
+    if (sha256)
+        data = {'sha256': sha256};
+
     $.ajax({
         type: 'GET',
         async: true,
-        url: '/file/upload/',
+        url: '/check/',
         dataType: 'json',
         data: data,
         context: {'filename': filename},
         cache: false,
         success: function(response){
 
-            /* if browser have FormData support send the file via XMLHttpRequest
-               with upload progress bar, else send it the standard way */
+            // Need to return suitable message if file exists
+            if (response.file_exists) {
+                $('#dlg-upload-progress').modal('hide');
+                window.location.href = '/recent-leaks/' + sha256 + '/?exists=1';
+            }
+            else {
 
-            if ( file && window.FormData) {
+                /* if browser have FormData support send the file via XMLHttpRequest
+                   with upload progress bar, else send it the standard way */
 
-                var fd = new FormData();
+                if ( file && window.FormData) {
 
-                fd.append('file', file);
-                fd.append('ajax','true');
+                    var fd = new FormData();
 
-                /* Due to a bug in AppEngine (http://code.google.com/p/googleappengine/issues/detail?id=5175)
-                  we have to send the IP of the user as a param in this post. The server is sending us the IP
-                  it saw in the GET request, so we can send it back in the POST. This workaround should be removed
-                  when the issue is solved */
+                    fd.append('file', file);
+                    fd.append('ajax','true');
 
-                fd.append('remote_addr', response.remote_addr);
+                    /* Due to a bug in AppEngine (http://code.google.com/p/googleappengine/issues/detail?id=5175)
+                      we have to send the IP of the user as a param in this post. The server is sending us the IP
+                      it saw in the GET request, so we can send it back in the POST. This workaround should be removed
+                      when the issue is solved */
 
-                if (sha256)
-                    fd.append('sha256', sha256);
+                    if (sha256)
+                        fd.append('sha256', sha256);
 
-                currentUpload = new XMLHttpRequest();
+                    currentUpload = new XMLHttpRequest();
 
-                currentUpload.upload.addEventListener('progress', uploadProgress, false);
-                currentUpload.addEventListener('load', uploadComplete, false);
-                currentUpload.addEventListener('error', uploadFailed, false);
-                currentUpload.open('POST', response.upload_url);
-                currentUpload.send(fd);
+                    currentUpload.upload.addEventListener('progress', uploadProgress, false);
+                    currentUpload.addEventListener('load', uploadComplete, false);
+                    currentUpload.addEventListener('error', uploadFailed, false);
+                    currentUpload.open('POST', response.upload_url);
+                    currentUpload.send(fd);
 
-            } else {
+                } else {
 
-                $('#frm-file').attr('action', response.upload_url);
-                $('#frm-file').submit();
+                    $('#frm-file').attr('action', response.upload_url);
+                    $('#frm-file').submit();
 
-                /*  in IE 7 animated GIFs freeze immediately after submit, we need this hack to reload the GIF and make the
-                    animation work during the file upload */
+                    /*  in IE 7 animated GIFs freeze immediately after submit, we need this hack to reload the GIF and make the
+                        animation work during the file upload */
 
-                $('#gif-upload-progress-bar span').html('<img style="display:block" src="/static/img/bar.gif">');
+                    $('#gif-upload-progress-bar span').html('<img style="display:block" src="/static/img/bar.gif">');
+                }
             }
         }
     }); // $.ajax()
@@ -266,7 +230,6 @@ function selectFile(evt) {
 
     /* when the hidden file input box changes its content,
        update also the visible GUI element  */
-
     var pieces = $(this).val().split(/(\\|\/)/g);
     selectedFileName = pieces[pieces.length-1];
 
@@ -275,10 +238,7 @@ function selectFile(evt) {
 }
 
 
-
-
 jQuery(document).ready(function(){
-
 
     $('.action').click(function(event) {
         var id = $(this).attr('id');
