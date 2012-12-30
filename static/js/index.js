@@ -44,7 +44,7 @@ function uploadComplete(evt) {
                else we want to display returned error message*/
                
             if (response.status == 'success'){
-                window.location.href = '/recent-leaks/' + response.sha256;
+                window.location.href = '/recent-leaks/?sha256=' + response.sha256 + '&success=1';
             } else {
                 // Hide upload dialog and display error message
                 $('#dlg-upload-progress').modal('hide');
@@ -104,7 +104,7 @@ function uploadFile(filename, file, sha256) {
             // Need to return suitable message if file exists
             if (response.file_exists) {
                 $('#dlg-upload-progress').modal('hide');
-                window.location.href = '/recent-leaks/' + sha256 + '/?exists=1';
+                window.location.href = '/recent-leaks/?sha256=' + sha256 + '&exists=1';
             }
             else {
 
@@ -175,7 +175,7 @@ function scanFile(evt) {
         return;
     }
 
-    if (selectedFile && selectedFile.size > 32*1024*1024) {
+    if (selectedFile && selectedFile.size > 2*1024*1024) {
         $('#dlg-file-too-large').modal('show');
         return;
     }

@@ -1452,6 +1452,39 @@ table .span24 {
   width: 1884px;
   margin-left: 0;
 }
+
+.table tbody tr.success td {
+  background-color: #dff0d8;
+}
+
+.table tbody tr.error td {
+  background-color: #f2dede;
+}
+
+.table tbody tr.warning td {
+  background-color: #fcf8e3;
+}
+
+.table tbody tr.info td {
+  background-color: #d9edf7;
+}
+
+.table-hover tbody tr.success:hover td {
+  background-color: #d0e9c6;
+}
+
+.table-hover tbody tr.error:hover td {
+  background-color: #ebcccc;
+}
+
+.table-hover tbody tr.warning:hover td {
+  background-color: #faf2cc;
+}
+
+.table-hover tbody tr.info:hover td {
+  background-color: #c4e3f3;
+}
+
 [class^="icon-"],
 [class*=" icon-"] {
   display: inline-block;
@@ -4464,6 +4497,44 @@ a:focus {
 .margin-top-12 {
   margin-top: 120px;
 }
+
+.margin-bottom-1 {
+  margin-bottom: 10px;
+}
+.margin-bottom-2 {
+  margin-bottom: 20px;
+}
+.margin-bottom-3 {
+  margin-bottom: 30px;
+}
+.margin-bottom-4 {
+  margin-bottom: 40px;
+}
+.margin-bottom-5 {
+  margin-bottom: 50px;
+}
+.margin-bottom-6 {
+  margin-bottom: 60px;
+}
+.margin-bottom-7 {
+  margin-bottom: 70px;
+}
+.margin-bottom-8 {
+  margin-bottom: 80px;
+}
+.margin-bottom-9 {
+  margin-bottom: 90px;
+}
+.margin-bottom-10 {
+  margin-bottom: 100px;
+}
+.margin-bottom-11 {
+  margin-bottom: 110px;
+}
+.margin-bottom-12 {
+  margin-bottom: 120px;
+}
+
 .center {
   display: block;
   margin-left: auto;
@@ -4621,7 +4692,7 @@ div.file-chooser input {
   -khtml-opacity: 0;
   -moz-opacity: 0;
 }
-div.url-chooser input {
+div.comment-chooser input {
   border: medium none;
   bottom: 0;
   float: right;
@@ -4650,7 +4721,7 @@ div.file-chooser span.file-name {
   line-height: 24px;
   margin: 2px 0 2px 2px;
 }
-div.url-chooser span.url {
+div.comment-chooser span.comment {
   display: block;
   float: left;
   overflow: hidden;
@@ -4665,13 +4736,13 @@ div.url-chooser span.url {
   margin: 2px 0 2px 2px;
 }
 div.file-chooser,
-div.url-chooser,
+div.comment-chooser,
 span.action {
   background-image: url("/static/img/sprite.png");
   background-repeat: no-repeat;
 }
 div.file-chooser,
-div.url-chooser {
+div.comment-chooser {
   background-position: 0 -297px;
   height: 28px;
   width: 398px;
@@ -4695,11 +4766,11 @@ span.action {
   cursor: pointer;
 }
 div.file-chooser:hover,
-div.url-chooser:hover {
+div.comment-chooser:hover {
   background-position: 0 -353px;
 }
 div.file-chooser:hover span.action,
-div.url-chooser:hover span.action {
+div.comment-chooser:hover span.action {
   background-position: right -437px;
 }
 div#logo {
