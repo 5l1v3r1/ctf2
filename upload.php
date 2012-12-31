@@ -43,9 +43,9 @@
     // Confirm file is allowed and confirm MIME type.
     $file_ext=strtolower(end(explode('.', $file_name)));
     $file_mime = checkMime($file_tmp);
-    $extensions = array("jpeg","jpg","png","gif","doc","pdf","docx"); 
+    $extensions = array("jpeg","jpg","png","gif","doc","pdf","docx","zip"); 
     if(in_array($file_ext,$extensions )=== false){
-        uploadError(array('msg' => 'For security reasons you can only upload files in the following formats .doc, .docx, .pdf, .jpg, .png, .gif.'));
+        uploadError(array('msg' => 'For security reasons you can only upload files in the following formats .doc, .docx, .pdf, .jpg, .png, .gif, .zip.'));
     }
     if(!$file_mime) {
          uploadError(array('msg' => 'The uploaded files MIME was not in the allowed list, no funny business....'));
@@ -61,6 +61,7 @@
     $fileLocation = $config['upload_dir'].'/'.$sha256;
     if (!file_exists($fileLocation)) {
         move_uploaded_file($file_tmp, $fileLocation);
+        chmod($fileLocation, 0664); // Chmod file so it can be deleted by users in group
     } else {
         uploadError(array($msg => 'Sorry this file has already been uploaded.'));			
     }
@@ -80,10 +81,7 @@
         printf("MySQL Error: %s\n", mysqli_sqlstate($query));
     }
     
-    // We have got to the end and file has been uploaded successfully. Return data about image:
-    
-    
-    // Return successful JSON with file information
+    // We have got to the end and file has been uploaded successfully.  Return successful JSON with file information
     $response['status'] = 'success';
     $response['info']   = '<p>Success! Your file has now been uploaded and shared with the world! You will now be redirected to the list of recent files</p>';
     $response['sha256'] = $sha256;

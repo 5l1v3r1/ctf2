@@ -47,9 +47,14 @@
                             <li id="mnu-home">
                                 <a href="/"><i class="icon-home icon-white"></i></a>
                             </li>
-                            <li id="mnu-community"><a href="/about/">About</a></li>
                             <li id="mnu-community"><a href="/recent-leaks/">Recent Leaks</a></li>
                         </ul>
+                        <?php if($_SESSION['admin']==1) { ?>
+                        <ul class="nav pull-right">
+                            <li><a href="/admin-area/">Admin Area</a></li>
+                            <li><a href="/admin-area/?action=logout">Logout</a></li>
+                        </ul>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -98,7 +103,7 @@
                         $result = $mysqli->query("SELECT id, originalFilename, newFilename, mimeType, time FROM uploads ORDER BY id DESC;");
     
                         if($result->num_rows == 0){  //Check if a file with this hash was already uploaded
-                        ?><tr><td colspan="4"><p class="center">There are leaks yet. Upload one!</p></td></tr><?php
+                        ?><tr><td colspan="4"><p class="center">There are no leaks yet. Upload one!</p></td></tr><?php
                             
                         } else { // otherwise display listing of items
                         

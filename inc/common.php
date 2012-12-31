@@ -1,6 +1,7 @@
 <?php
     // Common Functions
     include('config.php');
+    session_start(); //Start session managment
 
     // Connect to mysql database each time this file is included
 
@@ -22,13 +23,48 @@
         global $mysqli;
         
         $sha256 = $mysqli->real_escape_string($sha256); // Should already have been sanitized
-        $result = $mysqli->query("SELECT id FROM uploads WHERE filehash = '". $sha256 ."'");
+        $result = $mysqli->query("SELECT originalFilename FROM uploads WHERE filehash = '". $sha256 ."'");
         
         if($result->num_rows > 0){  //Check if a file with this hash was already uploaded
             return TRUE;
         } else {
             return FALSE;
         }
+    }
+    
+    function deleteFile($sha256) {
+        global $mysqli;
+        global $config;
+        // Remove file from database
+        $sha256 = $mysqli->real_escape_string($sha256); // Should already have been sanitized
+        $result = $mysqli->query("DELETE FROM uploads WHERE filehash = '$sha256'");
+        
+        // Delete the original file
+        $file_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $config['upload_dir'] . $sha256;
+        unlink($file_path);
+        
+        return TRUE;
+    }
+    
+    function secretFile($sha256) {
+        global $mysqli;
+        global $config;
+        
+        // Remove file from database
+        $sha256 = $mysqli->real_escape_string($sha256); // Should already have been sanitized
+        $result = $mysqli->query("SELECT originalFilename FROM uploads WHERE filehash = '$sha256'");
+        $row = $result->fetch_object(); //Store original filename in object
+        
+        $result = $mysqli->query("DELETE FROM uploads WHERE filehash = '". $sha256 ."'");
+        
+        // Move and securely delete original file
+        $file_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $config['upload_dir'] . $sha256;
+        $secret = fopen($_SERVER['DOCUMENT_ROOT'].'/mv.txt', 'w+') or die("Cannot open file");
+        fwrite($secret, "cp  $file_path /home/secret/".$row->originalFilename."\n");
+        fwrite($secret, "srm $file_path\n");
+        fclose($secret);
+        
+        return TRUE;
     }
 
     function getUploadURL($sha256) {

@@ -40,15 +40,20 @@
                             <li id="mnu-home">
                                 <a href="/"><i class="icon-home icon-white"></i></a>
                             </li>
-                            <li id="mnu-community"><a href="/about/">About</a></li>
                             <li id="mnu-community"><a href="/recent-leaks/">Recent Leaks</a></li>
                         </ul>
+                        <?php if($_SESSION['admin']==1) { ?>
+                        <ul class="nav pull-right">
+                            <li><a href="/admin-area/">Admin Area</a></li>
+                            <li><a href="/admin-area/?action=logout">Logout</a></li>
+                        </ul>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
      
             <!-- Upload progress dialog -->
-            <!-- Added AJAX upload tracking in XXXXXXX - Julian -->
+            <!-- Added AJAX upload tracking in 1772c330fb - Julian -->
             <div id="dlg-upload-progress" class="modal hide">
                 <div class="modal">
                       <div class="modal-header">
@@ -127,11 +132,11 @@
                             </div>
                         </form>
 
-                        <!-- File limit changed to 2MB in commit XXXXXXX - DC -->
+                        <!-- File limit changed to 2MB in commit e02a6c3. It works now :) - DC -->
                         <div class="center">Maximum file size: 2MB</div>
 
                         <div class="center margin-top-2" style="width:600px;color:gray;">
-                            For safety please only upload files of type: .doc, .pdf, .jpg, .png, .gif
+                            For safety please only upload files of type: .doc, .pdf, .jpg, .png, .gif, .zip
                         </div>
 
                         <div class="center margin-top-3">
